@@ -1,0 +1,86 @@
+
+/*────────────────── 
+       header-landing
+──────────────────*/
+
+.header-landing{
+	margin: 0;
+	width: 100%;
+	height: 70px;
+	display: flex;
+    align-items: center; 
+	justify-content: space-around; 
+    background: transparent;
+	position: fixed;
+	top: 0;
+	transition: 0.3s;
+	z-index: 5;
+    
+}
+
+.nav-show-landing{
+	opacity: 0;
+}
+
+.header-landing:hover{
+	opacity: 0.8;
+	background: var(--main-header-background);
+}
+
+
+.nav-bar-landing{
+	list-style:none;
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+a.nav-link-landing{
+	margin: 2px;
+	padding: 5px 8px;
+	text-decoration: none;
+	color: var(--main-fonts-color);
+	font-family: var(--main-font-family);
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.active-landing{
+	background: var(--main-decor-color);
+}
+
+.nav-link-landing:hover {
+	color: #03030c;
+    background: var(--main-decor-color);
+}
+
+
+
+/*──────────────────
+    social media
+──────────────────*/
+
+.social-media{
+	padding: 10px;
+	display: flex;
+	position: center;
+    align-items: space-around;
+	justify-content:center;
+}
+
+.social-media a {
+    margin: 10px;
+    font-size: 2rem;
+    text-align:center;
+    display: inline-block;
+	color: var(--main-fonts-color);
+}
+
+.social-media a i{
+	cursor: pointer;
+}
+
+.social-media  a:hover {
+	color: var(--main-decor-color);
+	text-shadow: 0 0 50px var(--main-decor-color);
+}
