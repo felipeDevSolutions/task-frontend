@@ -19,7 +19,7 @@ const AdminPanel = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://task-backend-3crz.onrender.com', {
+        const response = await axios.get('http://localhost:5000/api/users', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -38,7 +38,7 @@ const AdminPanel = () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://task-backend-3crz.onrender.com/api/users/${userId}`, {
+      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

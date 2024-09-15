@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Layout.css';
 import { AuthContext } from '../../context/AuthContext';
+import { FaSignOutAlt } from 'react-icons/fa'; // Importe o ícone de logout
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -37,7 +38,9 @@ const Layout = ({ children }) => {
 
             {currentUser && (
               <li className="nav-item-right">
-                <button className="nav-link logout-button" onClick={handleLogout}>Logout</button>
+                <button className="nav-link logout-button" onClick={handleLogout}>
+                  <FaSignOutAlt /> {/* Ícone de logout */}
+                </button>
               </li>
             )}
           </div>

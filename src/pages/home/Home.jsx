@@ -4,18 +4,21 @@ import Layout from '../../components/layout/Layout';
 import { AuthContext } from '../../context/AuthContext';
 import './Home.css';
 import Alerts, { showSuccessToast, showErrorToast } from '../../components/layout/Alerts';
+import { FaPen, FaCheck, FaTrash } from 'react-icons/fa'; // Importe os ícones
 
 function Home() {
   const { currentUser, isLoading, error } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
-  const [newProject, setNewproject] = useState('');
+  const [newProject, setNewProject] = useState('');
   const [showCompleted, setShowCompleted] = useState(false);
+  const [editingProjectId, setEditingProjectId] = useState(null);
+  const [editingProjectName, setEditingProjectName] = useState('');
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://task-backend-3crz.onrender.com/api/projects', {
+        const response = await fetch('http://localhost:5000/api/projects', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -23,15 +26,16 @@ function Home() {
         const data = await response.json();
         setProjects(data);
       } catch (err) {
-        console.error('Erro ao carregar tarefas:', err);
-        showErrorToast('Erro ao carregar tarefas!');
+        console.error('Erro ao carregar projetos:', err);
+        showErrorToast('Erro ao carregar projetos!');
       }
     };
+
     fetchProjects();
   }, []);
 
-  const handleNewprojectChange = (event) => {
-    setNewproject(event.target.value);
+  const handleNewProjectChange = (event) => {
+    setNewProject(event.target.value);
   };
 
   const handleAddProject = async (event) => {
@@ -39,7 +43,7 @@ function Home() {
     if (newProject.trim() !== '') {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://task-backend-3crz.onrender.com/api/projects', {
+        const response = await fetch('http://localhost:5000/api/projects', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,14 +54,14 @@ function Home() {
         if (response.ok) {
           const newProjectData = await response.json();
           setProjects([...projects, newProjectData]);
-          setNewproject('');
-          showSuccessToast('Tarefa adicionada!');
+          setNewProject('');
+          showSuccessToast('Projeto adicionado!');
         } else {
-          showErrorToast('Erro ao adicionar tarefa!');
+          showErrorToast('Erro ao adicionar projeto!');
         }
       } catch (err) {
-        console.error('Erro ao adicionar tarefa:', err);
-        showErrorToast('Erro ao adicionar tarefa!');
+        console.error('Erro ao adicionar projeto:', err);
+        showErrorToast('Erro ao adicionar projeto!');
       }
     }
   };
@@ -65,7 +69,7 @@ function Home() {
   const handleDeleteProject = async (projectId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}`, {
+      const response = await fetch(`http://localhost:5000/api/projects/${projectId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,20 +77,20 @@ function Home() {
       });
       if (response.ok) {
         setProjects(projects.filter((project) => project.id !== projectId));
-        showSuccessToast('Tarefa deletada!');
+        showSuccessToast('Projeto deletado!');
       } else {
-        showErrorToast('Erro ao deletar tarefa!');
+        showErrorToast('Erro ao deletar projeto!');
       }
     } catch (err) {
-      console.error('Erro ao deletar tarefa:', err);
-      showErrorToast('Erro ao deletar tarefa!');
+      console.error('Erro ao deletar projeto:', err);
+      showErrorToast('Erro ao deletar projeto!');
     }
   };
 
   const handleToggleProjectComplete = async (projectId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/complete`, {
+      const response = await fetch(`http://localhost:5000/api/projects/${projectId}/complete`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,18 +101,56 @@ function Home() {
           project.id === projectId ? { ...project, completed: !project.completed } : project
         );
         setProjects(updatedProjects);
-        showSuccessToast('Tarefa concluída!');
+        showSuccessToast('Status do projeto atualizado!');
       } else {
-        showErrorToast('Erro ao atualizar tarefa!');
+        showErrorToast('Erro ao atualizar projeto!');
       }
     } catch (err) {
-      console.error('Erro ao atualizar tarefa:', err);
-      showErrorToast('Erro ao atualizar tarefa!');
+      console.error('Erro ao atualizar projeto:', err);
+      showErrorToast('Erro ao atualizar projeto!');
     }
   };
 
   const handleShowCompleted = () => {
     setShowCompleted(!showCompleted);
+  };
+
+  const handleEditProject = (projectId, projectName) => {
+    setEditingProjectId(projectId);
+    setEditingProjectName(projectName);
+  };
+
+  const handleSaveProject = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/projects/${editingProjectId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ project: editingProjectName }),
+      });
+
+      if (response.ok) {
+        setProjects(projects.map((project) =>
+          project.id === editingProjectId ? { ...project, project: editingProjectName } : project
+        ));
+        setEditingProjectId(null);
+        setEditingProjectName('');
+        showSuccessToast('Nome do projeto atualizado com sucesso!');
+      } else {
+        showErrorToast('Erro ao atualizar o nome do projeto!');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar o nome do projeto:', err);
+      showErrorToast('Erro ao atualizar o nome do projeto!');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProjectId(null);
+    setEditingProjectName('');
   };
 
   return (
@@ -126,7 +168,7 @@ function Home() {
               className="form-control"
               placeholder="Adicionar novo projeto"
               value={newProject}
-              onChange={handleNewprojectChange}
+              onChange={handleNewProjectChange}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' && newProject.trim() !== '') {
                   event.preventDefault();
@@ -138,7 +180,10 @@ function Home() {
               <button className="btn btn-primary add-project-button" onClick={handleAddProject}>
                 Adicionar
               </button>
-              <button className={`toggle-completed-button btn ${showCompleted ? 'btn-orange' : 'btn-green'}`} onClick={handleShowCompleted}>
+              <button
+                className={`toggle-completed-button btn ${showCompleted ? 'btn-orange' : 'btn-green'}`}
+                onClick={handleShowCompleted}
+              >
                 {showCompleted ? 'Mostrar Pendentes' : 'Mostrar Concluídas'}
               </button>
             </div>
@@ -156,31 +201,60 @@ function Home() {
                 {projects
                   .filter((project) => (showCompleted ? project.completed : !project.completed))
                   .map((project) => (
-                    <Link key={project.id} to={`/project/${project.id}`}>
-                      <li className="list-group-item project-item d-flex justify-content-between align-items-center">
-                        {project.project}
-                        <div>
-                          <button
-                            className="btn btn-success btn-sm mr-2 project-done-button"
-                            onClick={(e) => {
-                              e.preventDefault(); // Impede a navegação ao clicar no botão "Fiz"
-                              handleToggleProjectComplete(project.id);
-                            }}
-                          >
-                            Fiz
-                          </button>
-                          <button
-                            className="btn btn-danger btn-sm project-delete-button"
-                            onClick={(e) => {
-                              e.preventDefault(); // Impede a navegação ao clicar no botão "Excluir"
-                              handleDeleteProject(project.id);
-                            }}
-                          >
-                            Excluir
-                          </button>
+                    <li
+                      key={project.id}
+                      className="list-group-item project-item d-flex justify-content-between align-items-center"
+                    >
+                      {editingProjectId === project.id ? (
+                        <div className="edit-project-form">
+                          <input
+                            type="text"
+                            value={editingProjectName}
+                            onChange={(e) => setEditingProjectName(e.target.value)}
+                          />
+                          <button onClick={handleSaveProject}>Salvar</button>
+                          <button onClick={handleCancelEdit}>Cancelar</button>
                         </div>
-                      </li>
-                    </Link>
+                      ) : (
+                        <>
+                          <Link to={`/project/${project.id}`}>
+                            <span className="project-name">{project.project}</span>
+                          </Link>
+                          <div className="project-actions"> {/* Nova div para os botões */}
+                            <button
+                              className="btn btn-action btn-success"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleToggleProjectComplete(project.id);
+                              }}
+                              title={project.completed ? 'Desmarcar' : 'Concluir'} // Título para o tooltip
+                            >
+                              <FaCheck /> {/* Ícone de check */}
+                            </button>
+                            <button
+                              className="btn btn-action btn-warning"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleEditProject(project.id, project.project);
+                              }}
+                              title="Editar" // Título para o tooltip
+                            >
+                              <FaPen /> {/* Ícone de edição */}
+                            </button>
+                            <button
+                              className="btn btn-action btn-danger"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleDeleteProject(project.id);
+                              }}
+                              title="Excluir" // Título para o tooltip
+                            >
+                              <FaTrash /> {/* Ícone de lixeira */}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </li>
                   ))}
               </ul>
             )}

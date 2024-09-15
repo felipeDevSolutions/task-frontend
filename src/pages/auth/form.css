@@ -118,6 +118,12 @@ form .input-field-redefinir input {
     border-color: var(--main-blue-border-shadow)
 }
 
+/* Seletor modificado para inputs preenchidos ou válidos */
+.input-field input:is(:not(:placeholder-shown), :valid) { 
+    padding: 16px 15px 0;
+    border-color: var(--main-blue-border-shadow)    
+}
+
 .input-field input:is(:focus, :valid) {
     padding: 16px 15px 0;
     border-color: var(--main-blue-border-shadow)
