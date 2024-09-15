@@ -17,7 +17,7 @@ const Project = () => {
     const fetchProjectData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://mytask-ze7d.onrender.com/api/projects/${projectId}`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +45,7 @@ const Project = () => {
     const fetchSections = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -73,7 +73,7 @@ const Project = () => {
     if (newSectionName.trim() !== '') {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ const Project = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections/${sectionId}`,
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${sectionId}`,
         {
           method: 'DELETE',
           headers: {
@@ -208,7 +208,7 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
         }
 
         const response = await fetch(
-          `https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
+          `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -237,7 +237,7 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch(
-          `https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
+          `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
           {
             method: 'POST',
             headers: {
@@ -269,7 +269,7 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `https://mytask-ze7d.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks/${taskId}`,
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks/${taskId}`,
         {
           method: 'DELETE',
           headers: {

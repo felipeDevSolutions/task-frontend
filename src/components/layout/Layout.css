@@ -1,0 +1,247 @@
+
+
+
+.colors {
+    --main-background: #a9a9a965;
+    --gray-background: #a9a9a965;
+    --main-fonts-color: #111111;
+    --second-fonts-color: #2d2d2db8;
+    --blue-fonts-color: #101bb8;
+    --blue-hover-fonts-color: #525dff;
+    --red-fonts-color: #d01313;
+    --red-hover-fonts-color: #c20000;
+    --main-header-background: #00868dc8;
+    --main-blue-border-shadow: #6ac3c6;
+    --main-font-family: "Patrick Hand SC", cursive;
+    --second-font-family: "Nanum Brush Script", cursive;
+    --third-font-family: "Shantell Sans", cursive;
+    --fourth-font-family: "Just Me Again Down Here", cursive;
+    --fifth-font-family: "Sue Ellen Francisco", cursive;
+    --sixth-font-family: "Square Peg", cursive;
+    --seventh-font-family: "Just Another Hand", cursive;
+
+	/* Cores */
+	--green-color: #4CAF50;
+	--red-color: #f44336;
+	--blue2-color: #1f9398;
+	--main-decor-color: #20afb1;
+
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+	height: 100vh;
+    margin: 0 auto;
+    padding: 0; /* Adicionado padding para garantir espaço nas laterais */
+}
+
+
+
+main{
+    display: flex;
+	width: 100%;
+	height: 100%;
+    margin: 0;
+    padding: 0;
+	background: var(--main-background);
+}
+
+/*────────────────── 
+       header
+──────────────────*/
+
+.header{
+	margin: 0;
+	width: 100%;
+	height: 70px;
+	display: flex;
+    align-items: center; 
+	justify-content: space-around; 
+    background: transparent;
+	position: fixed;
+	top: 0;
+	transition: 0.3s;
+	z-index: 5;
+    opacity: 0;
+	margin: 0;
+	padding: 0;
+}
+
+
+.nav-show{
+	opacity: 0;
+}
+
+.header:hover{
+	opacity: 0.8;
+	background: var(--main-header-background);
+}
+
+.nav-bar{
+	list-style:none;
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+a.nav-link{
+	margin: 2px;
+	padding: 5px 8px;
+	text-decoration: none;
+	color: var(--main-fonts-color);
+	font-family: var(--main-font-family);
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.active{
+	background: var(--main-decor-color);
+}
+
+.nav-link:hover {
+	color: #03030c;
+    background: var(--main-decor-color);
+}
+
+/*──────────────────
+       home
+──────────────────*/
+
+#home{ 	
+    width: 100%;
+	height: 100vh;
+	color: var(--main-fonts-color);
+	display: flex;
+	align-items: center;
+}
+
+#home .filter{
+	background: url('../../static/Quadro\ 1.png') no-repeat;
+	background-size:cover;
+	background-position:center;
+    position: fixed;
+    top: 0px;
+	height: 100%;
+    bottom: 0;
+    left: 0px;
+    right: 0;
+	opacity:100;
+}  
+
+.intro {
+	text-align:center;
+    color: var(--main-fonts-color);
+	z-index: 1;
+	margin: auto;
+	padding: 0px;
+}
+
+.intro  p{
+    margin: 5px;
+	font-size:1.2rem;
+	font-family: var(--main-font-family);
+	text-align:center;
+}
+
+h3{
+	padding-bottom: 15px;
+    letter-spacing: normal;
+    font-family: var(--main-font-family);
+	font-style: normal;
+	font-size: 70px;
+	color: var(--main-fonts-color);
+}
+
+h4{
+	padding-bottom: 15px;
+    letter-spacing: normal;
+    font-family: var(--main-font-family);
+	font-style: normal;
+	font-size: 40px;
+	color: var(--blue-fonts-color);
+}
+
+
+/*──────────────────
+    social media
+──────────────────*/
+
+.social-media{
+	padding: 10px;
+	display: flex;
+	position: center;
+    align-items: space-around;
+	justify-content:center;
+}
+
+.social-media a {
+    margin: 10px;
+    font-size: 2rem;
+    text-align:center;
+    display: inline-block;
+	color: var(--main-fonts-color);
+}
+
+.social-media a i{
+	cursor: pointer;
+}
+
+.social-media  a:hover {
+	color: var(--main-decor-color);
+	text-shadow: 0 0 50px var(--main-decor-color);
+}
+
+
+/* Estilo moderno para a barra de rolagem */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+	background: #888; /* Cor de fundo da barra de rolagem */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+	background: #26b7be; /* Cor do botão da barra de rolagem */
+	border-radius: 10px; /* Arredonda as bordas do botão */
+  }
+  
+::-webkit-scrollbar-thumb:hover {
+background: #32d7df; /* Cor do botão ao passar o mouse */
+}
+
+  
+@media screen and (max-width: 768px) {
+.header {
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.nav-bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+.nav-link {
+	display: block;
+	text-align: center;
+	width: 100%;
+}
+
+.nav-item-right {
+	margin-left: 0;
+}
+
+}

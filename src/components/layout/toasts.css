@@ -1,0 +1,35 @@
+.toast-success {
+    background-color: #2196F3; /* Azul do form.css */
+    color: white;
+    border: 2px solid #2196F3; /* Ajuste a borda conforme necessário */
+    border-radius: 5px; /* Ajusta o raio da borda conforme necessário */
+  }
+  
+  .toast-error {
+    background-color: #f44336; /* Vermelho do form.css */
+    color: white;
+    border: 2px solid #f44336; /* Ajusta a borda conforme necessário */
+    border-radius: 5px; /* Ajusta o raio da borda conforme necessário */
+  }
+  
+  .toast-warning {
+    background-color: #ffeb3b; /* Amarelo para avisos */
+    color: black;
+    border: 2px solid #ffeb3b; /* Ajusta a borda conforme necessário */
+    border-radius: 5px; /* Ajusta o raio da borda conforme necessário */
+  }
+  
+  /* Estilos adicionais para o conteúdo do Toast */
+  .toast-message {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px;
+  }
+  
+  .toast-progress {
+    background-color: #4CAF50; /* Verde para a barra de progresso */
+  }
+
+  .Toastify__toast-container { /* Target the toast container */
+    top: 30px; /* Set the bottom position */
+  }

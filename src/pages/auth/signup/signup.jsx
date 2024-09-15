@@ -28,7 +28,7 @@ const Signup = () => {
 
     setIsLoading(true);
 
-    axios.post('https://mytask-ze7d.onrender.com/api/signup', { 
+    axios.post('https://task-backend-3crz.onrender.com/api/signup', { 
       email: emailSignup,
       password: passwordSignup
     })

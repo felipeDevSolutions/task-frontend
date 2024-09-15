@@ -1,0 +1,110 @@
+.form-content-adminpanel{
+
+  width: 95vw;
+  min-width: 1210px;
+  max-width: 1210px;
+  min-height: 520px;
+  max-height: 520px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin-top: 40px;
+}
+
+
+
+
+.user-table {
+  width: 90%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: var(--main-fonts-color);
+  border-radius: 8px; /* Arredonda as bordas da tabela */
+  
+}
+
+.user-item{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--main-fonts-color);
+}
+
+.user-table th, .user-table td {
+  padding: 5px;
+  text-align: left;
+  
+  font-family: var(--third-font-family);
+  font-size: 1rem;
+
+}
+
+
+.user-table tr:hover {
+  background-color: var(--gray-background) /* Cor de destaque ao passar o mouse */
+}
+
+.user-table button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1f9398; /* Azul padrão */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease; /* Transição suave da cor */
+  display: inline-block; /* Faz com que os botões fiquem lado a lado */
+  font-size: 14px; /* Ajuste o tamanho da fonte */
+}
+
+.user-table .btn-edit {
+  background-color: #1f9398; /* Azul padrão */
+}
+
+.user-table .btn-edit:hover {
+  background-color: #26b7be; /* Azul mais escuro */
+  color: #fff;
+}
+
+.user-table .btn-delete {
+  background-color: #8d1515; /* Vermelho */
+}
+
+.user-table .btn-delete:hover {
+  background-color: #b31a1a; /* Vermelho mais escuro */
+  color: #fff;
+}
+
+/* Responsividade (Media Queries) */
+@media (max-width: 600px) {
+  .form-box-adminpanel {
+    display: flex;
+    align-items: center;
+    width: 90%; /* Ajuste a largura para telas menores */
+  }
+
+  .user-item{
+    display: flex;
+    width: 100%;
+  }
+  
+  .user-table {
+    display: flex;
+    display: block;
+    overflow-x: auto;
+  }
+  .user-table th, .user-table td {
+    display: flex;
+    font-size: 14px; /* Ajuste o tamanho da fonte */
+    padding: 2px; /* Reduz o padding para melhor visualização */
+  }
+  .user-table button {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px; /* Ajuste o padding dos botões */
+    font-size: 12px; /* Ajuste o tamanho da fonte */
+  }
+}

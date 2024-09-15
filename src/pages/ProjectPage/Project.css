@@ -1,0 +1,214 @@
+/* Container Principal */
+.project-container {
+  top: 162px;
+  left: 77px;
+  width: 100vw;
+  min-width: 1235px;
+  max-width: 1230px;
+  min-height: 520px;
+  max-height: 520px;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin-top: 0px;
+}
+
+
+.project-container h1{
+  margin-top: 5px;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+/* Seções */
+.sections-container {
+  top: 162px;
+  left: 77px;
+  width: 100vw;
+  min-width: 1220px;
+  max-width: 1220px;
+  min-height: 455px;
+  max-height: 455px;
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
+}
+
+.section-column {
+  background-color: #ffffffd5;
+  border-radius: 15px;
+  max-width: 280px;
+  min-width: 280px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+/* Tarefas */
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 10px;
+  position: relative;
+}
+
+.tasks-list {
+  flex: 1; /* Permite que a lista de tarefas cresça e ocupe o espaço disponível */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto; /* A rolagem vertical é aplicada apenas à lista */
+}
+
+.task-card {
+  background-color: #1e273798;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+}
+
+/* Botões */
+.add-task-button,
+.add-section-button,
+.add-section-form button,
+.add-task-form button {
+  background-color: #1f9398;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-task-button:hover,
+.add-section-button:hover,
+.add-section-form button:hover,
+.add-task-form button:hover {
+  background-color: #26b7be;
+}
+
+.add-section-button {
+  min-width: 280px;
+  background-color: #71d2d6c8;
+  color: #ffffffdb;
+  margin-bottom: 10px;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+
+.add-section-buttons{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.add-task-button {
+  align-self: center;
+  margin-top: auto;
+}
+
+/* Formulário de Adicionar Lista */
+.add-section-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease; /* Animação de aparecimento */
+}
+
+.add-section-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 280px; /* Largura fixa de 280px */
+}
+
+/* Formulário de Adicionar Tarefa */
+.add-task-form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.add-task-button, .add-task-form button {
+  background-color: #1f9398;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-task-button:hover,
+.add-task-form button:hover {
+  background-color: #26b7be;
+}
+
+.add-task-form input {
+  flex: 1; 
+  padding:  0px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.add-task-buttons{
+  display: flex;
+  justify-content: right;
+  gap: 10px;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo moderno para a barra de rolagem */
+.sections-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.sections-container::-webkit-scrollbar-track {
+  background: #888;
+}
+
+.sections-container::-webkit-scrollbar-thumb {
+  background: #26b7be;
+  border-radius: 10px;
+}
+
+.sections-container::-webkit-scrollbar-thumb:hover {
+  background: #32d7df;
+}
