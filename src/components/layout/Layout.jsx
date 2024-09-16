@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
             {currentUser && (
               <>
                 <li><Link to="/home" className="nav-link active">Projetos</Link></li>
-                <li><Link to="/admin" className="nav-link">Usuários</Link></li>
+                <li><Link to="/admin" className="nav-link">Minha Conta</Link></li>
               </>
             )}
 
