@@ -13,8 +13,7 @@
   margin-top: 0px;
 }
 
-
-.project-container h1{
+.project-container h1 {
   margin-top: 5px;
   margin-bottom: 0;
   padding: 10px;
@@ -38,20 +37,39 @@
 }
 
 .section-column {
-  background-color: #ffffffd5;
+  background: none;
   border-radius: 15px;
   max-width: 280px;
   min-width: 280px;
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
+  
 }
 
 .section-header {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: 5px;
+  border-radius: 4px; 
+  box-shadow: 0px 4px 10px rgba(83, 83, 83, 0.185); /* Sombra apenas embaixo */
+  transition: flex-direction 0.3s ease;
+  flex-direction: row; /* Alinha os elementos em linha (horizontal) */
+}
+
+.edit-section-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: column; /* Input em cima, botões embaixo */
+  width: 100%; 
+}
+
+.edit-section-container.editing { 
+  flex-direction: row;
+  width: 100%;
 }
 
 /* Tarefas */
@@ -61,29 +79,92 @@
   gap: 10px;
   overflow-y: auto;
   height: 100vh;
-  background-color: #ffffff;
-  border-radius: 15px;
+  background: none;
   padding: 10px;
   position: relative;
+  border-right: 1px dashed gray;
 }
 
 .tasks-list {
-  flex: 1; /* Permite que a lista de tarefas cresça e ocupe o espaço disponível */
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  overflow-y: auto; /* A rolagem vertical é aplicada apenas à lista */
+  overflow-y: auto; 
 }
 
 .task-card {
-  background-color: #1e273798;
   padding: 10px;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   text-align: left;
+  border-bottom: 1px solid gray;
+}
+
+.task-card span{
+  font-family: var(--third-font-family);
+  font-size: 1rem;
+}
+
+.task-actions {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.task-actions button{
+  font-size: small;
+}
+
+.task-card:hover .task-actions {
+  opacity: 1;
+}
+
+.task-completed {
+  color: rgb(0, 168, 101);
+  text-decoration:line-through;
+}
+
+.edit-task-form {
+  display: flex;
+  flex-direction: column; /* Alinha os elementos em coluna */
+  align-items: flex-start; /* Alinha os itens à esquerda */
+  gap: 7px; /* Espaçamento entre o input e os botões */
+}
+
+.edit-task-form input {
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  max-width: 100%; /* Defina a largura máxima do input */
+}
+
+.edit-task-buttons { /* Estilos para o container dos botões */
+  display: flex;
+  flex-direction: row; 
+  gap: 5px; 
+}
+
+.edit-task-form button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.edit-task-form button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+
+.edit-task-form button:last-child {
+  background-color: #dc3545;
+  color: white;
 }
 
 /* Botões */
@@ -116,7 +197,7 @@
   white-space: nowrap;
 }
 
-.add-section-buttons{
+.add-section-buttons {
   display: flex;
   justify-content: end;
   gap: 10px;
@@ -133,18 +214,18 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 10px;
-  animation: fadeIn 0.3s ease; /* Animação de aparecimento */
+  animation: fadeIn 0.3s ease;
 }
 
 .add-section-form input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  width: 280px; /* Largura fixa de 280px */
+  width: 280px; 
 }
 
 /* Formulário de Adicionar Tarefa */
-.add-task-form{
+.add-task-form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,34 +233,90 @@
   gap: 10px;
 }
 
-
-.add-task-button, .add-task-form button {
-  background-color: #1f9398;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.add-task-button:hover,
-.add-task-form button:hover {
-  background-color: #26b7be;
-}
-
 .add-task-form input {
   flex: 1; 
-  padding:  0px 8px;
+  padding: 0px 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 10px;
 }
 
-.add-task-buttons{
+.add-task-buttons {
   display: flex;
   justify-content: right;
   gap: 10px;
+}
+
+.section-actions { 
+  display: flex;
+  flex-direction: row; 
+  margin-left: 50px;
+  gap: 5px; 
+  opacity: 0; 
+  transition: opacity 0.3s ease;
+}
+
+.section-actions button{
+  font-size: small;
+}
+
+.section-header:hover .section-actions {
+  opacity: 1; 
+}
+
+.edit-section-input {
+  width: 100%; 
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.edit-actions-container {
+  display: flex;
+  gap: 5px; /* Adiciona um pequeno espaçamento entre os elementos */ 
+}
+
+.edit-section-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.section-header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%;
+  margin: 0;
+  padding: 5px;
+}
+
+.section-header-title h2{
+  display: flex;
+  margin-bottom: 0;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  position: absolute; /* Posicionamento absoluto em relação ao section-header */
+  top: 100%; /* Posiciona abaixo do botão de paleta */
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza horizontalmente */
+  margin-top: 5px; /* Espaçamento em relação ao botão */
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%; 
+  cursor: pointer;
 }
 
 /* Animações */

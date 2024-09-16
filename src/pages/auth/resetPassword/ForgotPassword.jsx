@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      await axios.post('http://localhost:5000/api/forgot-password', { email });
+      await axios.post('https://task-backend-3crz.onrender.com/api/forgot-password', { email });
       setIsLoading(false);
       showSuccessToast('Email de redefinição de senha enviado com sucesso!');
       navigate('/login');

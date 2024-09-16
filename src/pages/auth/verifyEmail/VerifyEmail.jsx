@@ -16,7 +16,7 @@ const VerifyEmail = () => {
       if (!uid) return; 
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/validate`, { // Verifica o status de login
+        const response = await axios.get(`https://task-backend-3crz.onrender.com/api/validate`, { // Verifica o status de login
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, 
           },
@@ -39,7 +39,7 @@ const VerifyEmail = () => {
   const resendVerificationEmail = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/resend-verification', { uid });
+      const response = await axios.post('https://task-backend-3crz.onrender.com/api/resend-verification', { uid });
       if (response.status === 200) {
         showSuccessToast('Email de verificação reenviado!');
       } else {

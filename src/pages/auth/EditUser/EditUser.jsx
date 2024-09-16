@@ -27,7 +27,7 @@ function EditUser() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.put(`http://localhost:5000/api/users/${userId}/password`, { 
+      await axios.put(`https://task-backend-3crz.onrender.com/api/users/${userId}/password`, { 
         oldPassword,
         newPassword,
         confirmPassword

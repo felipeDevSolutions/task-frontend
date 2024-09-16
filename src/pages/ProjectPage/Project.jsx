@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import Layout from '../../components/layout/Layout';
 import './Project.css';
 import Alerts, { showSuccessToast, showErrorToast } from '../../components/layout/Alerts';
+import { FaPen, FaPalette, FaTrash, FaCheckCircle, FaCircle } from 'react-icons/fa';
 
 const Project = () => {
   const { projectId } = useParams();
@@ -11,13 +12,17 @@ const Project = () => {
   const [newSectionName, setNewSectionName] = useState('');
   const [isAddingSection, setIsAddingSection] = useState(false);
   const [projectName, setProjectName] = useState('');
+  const [editingSectionId, setEditingSectionId] = useState(null);
+  const [editingSectionName, setEditingSectionName] = useState('');
   const addSectionFormRef = useRef(null);
+
+  const colors = ['#ffffffd5', '#f28b82', '#fbbc04', '#fff475', '#ccff90', '#a7ffeb', '#cbf0f8', '#aecbfa', '#d7aefb', '#fdcfe8', '#e6c9a8', '#e8eaed'];
 
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/projects/${projectId}`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +50,7 @@ const Project = () => {
     const fetchSections = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/projects/${projectId}/sections`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -73,7 +78,7 @@ const Project = () => {
     if (newSectionName.trim() !== '') {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/projects/${projectId}/sections`, {
+        const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -103,7 +108,7 @@ const Project = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:5000/api/projects/${projectId}/sections/${sectionId}`,
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${sectionId}`,
         {
           method: 'DELETE',
           headers: {
@@ -144,6 +149,70 @@ const Project = () => {
     };
   }, [addSectionFormRef]);
 
+  const handleEditSection = (sectionId, sectionName) => {
+    setEditingSectionId(sectionId);
+    setEditingSectionName(sectionName);
+  };
+
+  const handleSaveSection = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${editingSectionId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: editingSectionName }),
+      });
+
+      if (response.ok) {
+        setSections(sections.map((section) =>
+          section.id === editingSectionId ? { ...section, name: editingSectionName } : section
+        ));
+        setEditingSectionId(null);
+        setEditingSectionName('');
+        showSuccessToast('Nome da seção atualizado com sucesso!');
+      } else {
+        showErrorToast('Erro ao atualizar o nome da seção!');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar o nome da seção:', err);
+      showErrorToast('Erro ao atualizar o nome da seção!');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSectionId(null);
+    setEditingSectionName('');
+  };
+
+  const handleSaveColor = async (sectionId, newColor) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${sectionId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ color: newColor }),
+      });
+
+      if (response.ok) {
+        setSections(sections.map((section) =>
+          section.id === sectionId ? { ...section, color: newColor } : section
+        ));
+        showSuccessToast('Cor da seção atualizada com sucesso!');
+      } else {
+        showErrorToast('Erro ao atualizar a cor da seção!');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar a cor da seção:', err);
+      showErrorToast('Erro ao atualizar a cor da seção!');
+    }
+  };
+
   return (
     <Layout>
       <Alerts />
@@ -157,6 +226,15 @@ const Project = () => {
               section={section}
               onDelete={handleDeleteSection}
               projectId={projectId}
+              onEdit={handleEditSection}
+              onSave={handleSaveSection}
+              onCancel={handleCancelEdit}
+              editingSectionId={editingSectionId}
+              editingSectionName={editingSectionName}
+              setEditingSectionName={setEditingSectionName}
+              setEditingSectionId={setEditingSectionId}
+              colors={colors}
+              handleSaveColor={handleSaveColor}
             />
           ))}
 
@@ -190,11 +268,28 @@ const Project = () => {
   );
 };
 
-const SectionColumn = ({ section, onDelete, projectId }) => {
+const SectionColumn = ({
+  section,
+  onDelete,
+  projectId,
+  onEdit,
+  onSave,
+  onCancel,
+  editingSectionId,
+  editingSectionName,
+  setEditingSectionName,
+  setEditingSectionId,
+  colors,
+  handleSaveColor,
+}) => {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [isAddingTask, setIsAddingTask] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [editingSectionColor, setEditingSectionColor] = useState(null);
   const { currentUser } = useContext(AuthContext);
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTaskTitle, setEditingTaskTitle] = useState('');
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -208,7 +303,7 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/${projectId}/sections/${section.id}/tasks`,
+          `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -237,7 +332,7 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch(
-          `http://localhost:5000/api/projects/${projectId}/sections/${section.id}/tasks`,
+          `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks`,
           {
             method: 'POST',
             headers: {
@@ -265,11 +360,86 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
     }
   };
 
+  const handleEditTask = (taskId, taskTitle) => {
+    setEditingTaskId(taskId);
+    setEditingTaskTitle(taskTitle);
+  };
+
+  const handleSaveTask = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks/${editingTaskId}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title: editingTaskTitle }),
+        }
+      );
+
+      if (response.ok) {
+        setTasks(tasks.map((task) =>
+          task.id === editingTaskId ? { ...task, title: editingTaskTitle } : task
+        ));
+        setEditingTaskId(null);
+        setEditingTaskTitle('');
+        showSuccessToast('Tarefa atualizada com sucesso!');
+      } else {
+        showErrorToast('Erro ao atualizar a tarefa!');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar a tarefa:', err);
+      showErrorToast('Erro ao atualizar a tarefa!');
+    }
+  };
+
+  const handleCancelTaskEdit = () => {
+    setEditingTaskId(null);
+    setEditingTaskTitle('');
+  };
+
+  const handleToggleTaskComplete = async (taskId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const userId = currentUser ? currentUser.id : null; 
+
+      if (!userId) {
+        console.error('Usuário não autenticado!');
+        return;
+      }
+
+      const response = await fetch(
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks/${taskId}/complete`,
+        {
+          method: 'PUT', 
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setTasks(tasks.map((task) =>
+          task.id === taskId ? { ...task, completed: !task.completed } : task
+        ));
+        showSuccessToast('Status da tarefa atualizado!');
+      } else {
+        showErrorToast('Erro ao atualizar o status da tarefa!');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar o status da tarefa:', err);
+      showErrorToast('Erro ao atualizar o status da tarefa!');
+    }
+  };
+
   const handleDeleteTask = async (taskId) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:5000/api/projects/${projectId}/sections/${section.id}/tasks/${taskId}`,
+        `https://task-backend-3crz.onrender.com/api/projects/${projectId}/sections/${section.id}/tasks/${taskId}`,
         {
           method: 'DELETE',
           headers: {
@@ -293,16 +463,164 @@ const SectionColumn = ({ section, onDelete, projectId }) => {
 
   return (
     <div className="section-column">
-      <div className="section-header">
-        <h2>{section.name}</h2>
-        <button onClick={() => onDelete(section.id)}>Excluir Seção</button>
+      <div className={`section-header ${editingSectionId === section.id ? 'editing' : ''}`} style={{ backgroundColor: section.color }}>
+        {editingSectionId === section.id ? ( 
+          <div className="edit-section-container">
+            <input
+              className="edit-section-input"
+              type="text"
+              value={editingSectionName}
+              onChange={(e) => setEditingSectionName(e.target.value)}
+            />
+            <div className="edit-actions-container">
+              <div className="edit-section-buttons">
+                <button onClick={onSave}>Salvar</button>
+                <button onClick={onCancel}>Cancelar</button>
+              </div>
+              <div className="section-actions"> 
+                <button
+                  className="btn btn-action"
+                  style={{ borderColor: '#FFC107' }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setEditingSectionColor(
+                      editingSectionColor === section.id ? null : section.id
+                    );
+                    setShowColorPicker(!showColorPicker);
+                  }}
+                  title="Escolher Cor"
+                >
+                  <FaPalette />
+                </button>
+                <button
+                  className="btn btn-action btn-danger"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onDelete(section.id);
+                  }}
+                  title="Excluir"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <> 
+            <div className="section-header-title">
+              <h2>{section.name}</h2>
+              <div className="section-actions">
+                <button
+                  className="btn btn-action btn-warning"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onEdit(section.id, section.name);
+                  }}
+                  title="Editar"
+                >
+                  <FaPen />
+                </button>
+                <button
+                  className="btn btn-action"
+                  style={{ borderColor: '#FFC107' }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setEditingSectionColor(
+                      editingSectionColor === section.id ? null : section.id
+                    );
+                    setShowColorPicker(!showColorPicker);
+                  }}
+                  title="Escolher Cor"
+                >
+                  <FaPalette />
+                </button>
+                <button
+                  className="btn btn-action btn-danger"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onDelete(section.id);
+                  }}
+                  title="Excluir"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {showColorPicker && editingSectionColor === section.id && (
+          <div className="color-picker">
+            {colors.map((color) => (
+              <div
+                key={color}
+                className="color-box"
+                style={{ backgroundColor: color }}
+                onClick={() => {
+                  handleSaveColor(section.id, color);
+                  setShowColorPicker(false);
+                  setEditingSectionColor(null);
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
       <div className="tasks-container">
         <div className="tasks-list">
           {tasks.map((task) => (
             <div key={task.id} className="task-card">
-              {task.title}
-              <button onClick={() => handleDeleteTask(task.id)}>Excluir</button>
+              {/* Exibe o ícone de tarefa concluída/pendente */}
+              {editingTaskId === task.id ? (
+                <div className="edit-task-form">
+                  <input
+                    type="text"
+                    value={editingTaskTitle}
+                    onChange={(e) => setEditingTaskTitle(e.target.value)}
+                  />
+                  <div className="edit-task-buttons"> {/* div para os botões */}
+                    <button onClick={handleSaveTask}>Salvar</button>
+                    <button onClick={handleCancelTaskEdit}>Cancelar</button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <span className={task.completed ? 'task-completed' : ''}>{task.title}</span>
+                  <div className="task-actions">
+                    <button
+                      className="btn btn-action btn-success"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToggleTaskComplete(task.id);
+                      }}
+                      title={task.completed ? 'Marcar como Pendente' : 'Marcar como Concluída'}
+                    >
+                      {task.completed ? <FaCheckCircle /> : <FaCircle />} 
+                    </button>
+                    <button
+                      className="btn btn-action btn-warning"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleEditTask(task.id, task.title);
+                      }}
+                      title="Editar Tarefa"
+                    >
+                      <FaPen />
+                    </button>
+                    <button
+                      className="btn btn-action btn-danger"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDeleteTask(task.id);
+                      }}
+                      title="Excluir Tarefa"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>

@@ -25,7 +25,7 @@ function LandingPage() {
         <div className='nav-landing'>
           <div className="nav-bar-landing">
             <div className="bg"></div>
-            <li><a className="nav-link-landing active-landing" href="/" onClick={handleGoToLandingPage}>LandingPage</a></li>
+            <li><a className="nav-link-landing active-landing" href="/" onClick={handleGoToLandingPage}>Home</a></li>
             {/* Exibe o botão Login se o usuário não estiver logado e não estiver carregando */}
             {!currentUser && !isLoading && <li><a className="nav-link-landing" href="/login" onClick={handleGoToLogin}>Login</a></li>}
             {/* Exibe o botão Signup se o usuário não estiver logado e não estiver carregando */}

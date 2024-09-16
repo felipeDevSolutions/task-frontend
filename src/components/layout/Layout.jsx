@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
             
             {!currentUser && (
               <>
-                <li><Link to="/" className="nav-link active">LandingPage</Link></li>
+                <li><Link to="/" className="nav-link active">Home</Link></li>
                 <li><Link to="/login" className="nav-link">Login</Link></li>
                 <li><Link to="/signup" className="nav-link">Signup</Link></li>
               </>
@@ -31,8 +31,8 @@ const Layout = ({ children }) => {
 
             {currentUser && (
               <>
-                <li><Link to="/home" className="nav-link active">Home</Link></li>
-                <li><Link to="/admin" className="nav-link">Admin</Link></li>
+                <li><Link to="/home" className="nav-link active">Projetos</Link></li>
+                <li><Link to="/admin" className="nav-link">Usuários</Link></li>
               </>
             )}
 

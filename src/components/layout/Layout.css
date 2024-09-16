@@ -100,7 +100,7 @@ a.nav-link{
 .logout-button svg { /* Seletor para o ícone dentro do botão de logout */
 	display: flex;
 	font-size: 1.3em; /* Ajuste o tamanho conforme desejado */
-	color: white;    /* Cor branca */
+	color: rgb(71, 71, 71);    /* Cor branca */
 }
 
 /*──────────────────
